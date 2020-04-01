@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import { connect } from "react-redux";
 import { actionCreators } from "../store";
+import ToDo from "../Components/ToDo";
 
 function Home({toDos, addToDo}) {
   const [text, setText] = useState("");
-  console.log({toDos});
   function onChange(e){
     setText(e.target.value);
   }
@@ -21,7 +21,9 @@ function Home({toDos, addToDo}) {
         <input type="text" value={text} onChange={onChange}/>
         <button>Add</button>
         <ul>
-            {JSON.stringify(toDos)}
+            {
+              toDos.map((toDo)=><ToDo {...toDo} key={toDo.id}></ToDo>)
+            }
         </ul>
     </form>
     </>
@@ -29,12 +31,13 @@ function Home({toDos, addToDo}) {
 }
 
 function mapStateToProps(state, ownProps) {
+  localStorage.setItem("toDos", JSON.stringify(state));
+  console.log(localStorage.getItem("toDos"));
     return { toDos : state };
 }
 function mapDispachToProps(dispach, ownProps){
     return {
         addToDo : (text) => dispach(actionCreators.addToDo(text)),
-        deleteToDo : (id) => dispach(actionCreators.deleteToDo(id))
     };
 }
 
