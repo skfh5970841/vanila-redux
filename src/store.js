@@ -1,6 +1,7 @@
 import { createStore } from "redux";
 const ADD = "ADD";
 const DELETE= "DELETE";
+const SYNC = "SYNC";
 
 const addToDo = (text) =>{
     return {
@@ -14,6 +15,13 @@ const deleteToDo = (id) =>{
         id: parseInt(id)
     }
 }
+const syncToDo = (syncstate) => {
+    return{
+        type: SYNC,
+        syncstate
+    }
+}
+
 const reducer = (state=[], action) => {
     switch (action.type) {
         case ADD: 
@@ -28,7 +36,8 @@ const store = createStore(reducer);
 
 export const actionCreators = {
     addToDo,
-    deleteToDo
+    deleteToDo,
+    syncToDo
 }
 
 export default store;
