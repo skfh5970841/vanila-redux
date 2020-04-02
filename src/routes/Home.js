@@ -3,9 +3,8 @@ import { connect } from "react-redux";
 import { actionCreators } from "../store";
 import ToDo from "../Components/ToDo";
 
-function Home({toDos, addToDo}) {
+function Home({toDos, addToDo, syncState}) {
   const [text, setText] = useState("");
-  let count = 0;
   
   function onChange(e){
     setText(e.target.value);
@@ -15,8 +14,24 @@ function Home({toDos, addToDo}) {
     e.preventDefault();
     addToDo(text);
     setText("");
-    localStorage.setItem("toDos", JSON.stringify({text, ...toDos}));
+    const toDow = {text, id:Date.now()};
+    localStorage.setItem("toDos", JSON.stringify(
+      {toDow, ...toDos}
+      ));
   }
+  useEffect(()=>{
+    if(localStorage.getItem("toDos")){
+      const localToDos = JSON.parse(localStorage.getItem("toDos"));
+      var result = Object.keys(localToDos).map(function (key) { 
+        return Number(key), localToDos[key]; 
+      });
+      
+      result.unshift(result[result.length-1]);
+      result.pop();
+      
+      result.map(localToDo => {syncState(localToDo)});
+    }
+  }, []);
   return (
     <>
     <h1>To Do</h1> {" "}

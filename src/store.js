@@ -28,6 +28,9 @@ const reducer = (state=[], action) => {
             return [{text: action.text, id: Date.now()}, ...state];
         case DELETE: 
             return state.filter(toDo => toDo.id !== action.id);
+        case SYNC:
+            console.log(action.syncstate.text);
+            return [...state, {text: action.syncstate.text, id: action.syncstate.id}];
         default:
             return state;
     }
