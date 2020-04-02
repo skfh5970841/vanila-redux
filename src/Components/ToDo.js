@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { actionCreators } from "../store";
 
 function ToDo({text, deleteToDo, id, toDos}) {
+    useEffect(()=>{
+        localStorage.setItem("toDos", JSON.stringify(toDos));
+    }, [])
     function deleteToDoLocal(){
         localStorage.setItem("toDos", JSON.stringify(toDos.filter(function(toDo) {
             return toDo.id !== parseInt(id)
@@ -22,7 +25,6 @@ function mapStateToProps(state, ownProps) {
     return { toDos : state };
 }
 function mapDispachToProps(dispach, ownProps){
-    console.log(ownProps)
     return {
         deleteToDo : ()=>dispach(actionCreators.deleteToDo(ownProps.id))
     };

@@ -14,23 +14,23 @@ function Home({toDos, addToDo, syncState}) {
     e.preventDefault();
     addToDo(text);
     setText("");
-    const toDow = {text, id:Date.now()};
-    localStorage.setItem("toDos", JSON.stringify(
-      {toDow, ...toDos}
-      ));
+    //const toDow = {text, id:Date.now()};
+    //localStorage.setItem("toDos", JSON.stringify(
+    //  {...toDos, toDow}
+    //));
   }
+  //localStorage.setItem("toDos", JSON.stringify(toDos));
   useEffect(()=>{
     if(localStorage.getItem("toDos")){
       const localToDos = JSON.parse(localStorage.getItem("toDos"));
       var result = Object.keys(localToDos).map(function (key) { 
         return Number(key), localToDos[key]; 
-      });
-      
-      result.unshift(result[result.length-1]);
-      result.pop();
-      
+      });  
+      //result.unshift(result[result.length-1]);
+      //result.pop();
       result.map(localToDo => {syncState(localToDo)});
     }
+    return () => console.log(toDos);
   }, []);
   return (
     <>
